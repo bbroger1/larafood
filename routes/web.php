@@ -32,6 +32,14 @@ Route::prefix('admin')
 
         //home dashboard
         Route::get('/', 'PlanController@index')->name('admin.index');
+
+        //routes profile
+        Route::any('profiles/search', 'ACL\ProfileController@search')->name('profiles.search');
+        Route::resource('profiles', 'ACL\ProfileController');
+
+        //routes permission
+        Route::any('permissions/search', 'ACL\PermissionController@search')->name('permissions.search');
+        Route::resource('permissions', 'ACL\PermissionController');
     });
 
 //routes details plans
@@ -45,12 +53,4 @@ Route::prefix('plans')
         Route::delete('{url}/details/delete/{idDetail}', 'DetailPlanController@destroy')->name('details.plan.destroy');
         Route::get('{url}/details/{idDetail}/edit', 'DetailPlanController@edit')->name('details.plan.edit');
         Route::put('{url}/details/{idDetail}', 'DetailPlanController@update')->name('details.plan.update');
-    });
-
-//routes profile
-Route::prefix('admin')
-    ->namespace('Admin')
-    ->group(function () {
-        Route::any('profiles/search', 'ACL\ProfileController@search')->name('profiles.search');
-        Route::resource('profiles', 'ACL\ProfileController');
     });
