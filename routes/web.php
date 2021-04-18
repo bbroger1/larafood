@@ -17,13 +17,31 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin/plans', 'Admin\PlanController@index')->name('plans.index');
-Route::get('admin/plans/create', 'Admin\PlanController@create')->name('plans.create');
-Route::post('admin/plans', 'Admin\PlanController@store')->name('plans.store');
-Route::any('admin/plans/search', 'Admin\PlanController@search')->name('plans.search');
-Route::get('admin/plans/{url}', 'Admin\PlanController@show')->name('plans.show');
-Route::delete('admin/plans/{url}', 'Admin\PlanController@destroy')->name('plans.destroy');
-Route::get('admin/plans/{url}/edit', 'Admin\PlanController@edit')->name('plans.edit');
-Route::put('admin/plans/{url}', 'Admin\PlanController@update')->name('plans.update');
+//routes details plans
+Route::prefix('plans')
+    ->group(function () {
+        Route::get('{url}/details', 'Admin\DetailPlanController@index')->name('details.plan.index');
+        Route::get('{url}/details/create', 'Admin\DetailPlanController@create')->name('details.plan.create');
+        Route::post('{url}/details', 'Admin\DetailPlanController@store')->name('details.plan.store');
+        Route::get('{url}/details/{idDetail}', 'Admin\DetailPlanController@show')->name('details.plan.show');
+        Route::delete('{url}/details/delete/{idDetail}', 'Admin\DetailPlanController@destroy')->name('details.plan.destroy');
+        Route::get('{url}/details/{idDetail}/edit', 'Admin\DetailPlanController@edit')->name('details.plan.edit');
+        Route::put('{url}/details/{idDetail}', 'Admin\DetailPlanController@update')->name('details.plan.update');
+    });
 
-Route::get('admin', 'Admin\PlanController@index')->name('admin.index');
+//routes plans
+Route::prefix('admin')
+    ->namespace('Admin')
+    ->group(function () {
+        Route::get('plans', 'PlanController@index')->name('plans.index');
+        Route::get('plans/create', 'PlanController@create')->name('plans.create');
+        Route::post('plans', 'PlanController@store')->name('plans.store');
+        Route::any('plans/search', 'PlanController@search')->name('plans.search');
+        Route::get('plans/{url}', 'PlanController@show')->name('plans.show');
+        Route::delete('plans/{url}', 'PlanController@destroy')->name('plans.destroy');
+        Route::get('plans/{url}/edit', 'PlanController@edit')->name('plans.edit');
+        Route::put('plans/{url}', 'PlanController@update')->name('plans.update');
+
+        //home dashboard
+        Route::get('/', 'PlanController@index')->name('admin.index');
+    });

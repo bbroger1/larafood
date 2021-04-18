@@ -1,3 +1,4 @@
+@csrf
 @include('admin.pages.plans.includes.alerts')
 <div class="form-group">
     <label for="name">Nome:</label>

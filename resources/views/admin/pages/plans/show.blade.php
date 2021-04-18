@@ -3,6 +3,11 @@
 @section('title', 'Detalhes do Plano')
 
 @section('content_header')
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Planos</a></li>
+        <li class="breadcrumb-item active">{{ $plan->name }}</a></li>
+    </ol>
     <h1>Detalhes do Plano <b>{{ $plan->name }}</b></h1>
 @stop
 

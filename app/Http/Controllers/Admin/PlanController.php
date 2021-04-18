@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdatePlan;
 use Illuminate\Http\Request;
 use App\Models\Plan;
-use Illuminate\Support\Str;
 
 class PlanController extends Controller
 {
@@ -34,7 +33,9 @@ class PlanController extends Controller
     {
         $this->repository->create($request->all());
 
-        return  redirect()->route('plans.index');
+        return  redirect()
+            ->route('plans.index')
+            ->with('message', 'Registro cadastrado com sucesso');;
     }
 
     public function show($url)
@@ -73,20 +74,33 @@ class PlanController extends Controller
 
         $plan->update($request->all());
 
-        return  redirect()->route('plans.index');
+        return  redirect()
+            ->route('plans.index')
+            ->with('message', 'Registro editado com sucesso');;
     }
 
     public function destroy($url)
     {
-        $plan = $this->repository->where('url', $url)->first();
+        $plan = $this->repository
+            ->with('details')
+            ->where('url', $url)
+            ->first();
 
         if (!$plan) {
             return redirect()->back();
         }
 
+        if ($plan->details->count() > 0) {
+            return redirect()
+                ->back()
+                ->with('alert', 'Plano possui detalhes ativos, não é possível deletar');;
+        }
+
         $plan->delete();
 
-        return redirect()->route('plans.index');
+        return redirect()
+            ->route('plans.index')
+            ->with('message', 'Registro deletado com sucesso');
     }
 
     public function search(Request $request)
