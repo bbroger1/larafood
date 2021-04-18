@@ -17,18 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//routes details plans
-Route::prefix('plans')
-    ->group(function () {
-        Route::get('{url}/details', 'Admin\DetailPlanController@index')->name('details.plan.index');
-        Route::get('{url}/details/create', 'Admin\DetailPlanController@create')->name('details.plan.create');
-        Route::post('{url}/details', 'Admin\DetailPlanController@store')->name('details.plan.store');
-        Route::get('{url}/details/{idDetail}', 'Admin\DetailPlanController@show')->name('details.plan.show');
-        Route::delete('{url}/details/delete/{idDetail}', 'Admin\DetailPlanController@destroy')->name('details.plan.destroy');
-        Route::get('{url}/details/{idDetail}/edit', 'Admin\DetailPlanController@edit')->name('details.plan.edit');
-        Route::put('{url}/details/{idDetail}', 'Admin\DetailPlanController@update')->name('details.plan.update');
-    });
-
 //routes plans
 Route::prefix('admin')
     ->namespace('Admin')
@@ -44,4 +32,25 @@ Route::prefix('admin')
 
         //home dashboard
         Route::get('/', 'PlanController@index')->name('admin.index');
+    });
+
+//routes details plans
+Route::prefix('plans')
+    ->namespace('Admin')
+    ->group(function () {
+        Route::get('{url}/details', 'DetailPlanController@index')->name('details.plan.index');
+        Route::get('{url}/details/create', 'DetailPlanController@create')->name('details.plan.create');
+        Route::post('{url}/details', 'DetailPlanController@store')->name('details.plan.store');
+        Route::get('{url}/details/{idDetail}', 'DetailPlanController@show')->name('details.plan.show');
+        Route::delete('{url}/details/delete/{idDetail}', 'DetailPlanController@destroy')->name('details.plan.destroy');
+        Route::get('{url}/details/{idDetail}/edit', 'DetailPlanController@edit')->name('details.plan.edit');
+        Route::put('{url}/details/{idDetail}', 'DetailPlanController@update')->name('details.plan.update');
+    });
+
+//routes profile
+Route::prefix('admin')
+    ->namespace('Admin')
+    ->group(function () {
+        Route::any('profiles/search', 'ACL\ProfileController@search')->name('profiles.search');
+        Route::resource('profiles', 'ACL\ProfileController');
     });

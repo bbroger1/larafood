@@ -1,5 +1,5 @@
 @csrf
-@include('admin.pages.plans.includes.alerts')
+@include('admin.pages.includes.alerts')
 <div class="form-group">
     <label for="name">Nome:</label>
     <input class="form-control" type="text" name="name" id="name" placeholder="Nome"
