@@ -11,6 +11,11 @@ class Permission extends Model
         'description'
     ];
 
+    public function profile()
+    {
+        return $this->belongsToMany(Profile::class);
+    }
+
     public function search($filter = null)
     {
         $results = Permission::where('name', 'LIKE', "%$filter%")

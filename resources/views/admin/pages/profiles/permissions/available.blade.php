@@ -10,18 +10,19 @@
     <div class="row">
         <div class="col-md-6">
             <h1>
-                Permissões
+                Cadastrar permissões do perfil {{ $profile->name }}
             </h1>
         </div>
 
         <div class="col-md-6">
             <div class="row float-right pr-2">
-                <form action="{{ route('permissions.search') }}" method="POST" class="form form-inline">
+                <form action="{{ route('profiles.permissions.available.search', $profile->id) }}" method="POST"
+                    class="form form-inline">
                     @csrf
                     <input type="text" name="filter" class="form-control mr-2" value="{{ $filters['filter'] ?? '' }}">
                     <button type="submit" class="btn btn-dark"><i class="fas fa-search"></i> Filtrar</button>
                 </form>
-                <a href="{{ route('permissions.create') }}" class="btn btn-dark ml-2">
+                <a href="{{ route('profiles.permissions.available', $profile->id) }}" class="btn btn-dark ml-2">
                     <i class="fas fa-plus-square"></i>
                     Cadastrar
                 </a>
@@ -38,32 +39,29 @@
             <table class="table table-condensed">
                 <thead>
                     <tr>
+                        <th width="50px">#</th>
                         <th>Nome</th>
                         <th>Descrição</th>
-                        <th class="text-center">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($permissions as $permission)
+                    <form action="{{ route('profiles.permissions.attach', $profile->id) }}" method="post">
+                        @csrf
+                        @foreach ($permissions as $permission)
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}">
+                                </td>
+                                <td>{{ $permission->name }}</td>
+                                <td>{{ $permission->description }}</td>
+                            </tr>
+                        @endforeach
                         <tr>
-                            <td>{{ $permission->name }}</td>
-                            <td>{{ $permission->description }}</td>
-                            <td class="text-center" width='20%'>
-                                <form action="{{ route('permissions.destroy', $permission->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <a href="{{ route('permissions.profiles', $permission->id) }}"
-                                        class="btn btn-info btn-sm"><i class="fas fa-info"></i></a>
-                                    <a href="{{ route('permissions.show', $permission->id) }}"
-                                        class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
-                                    <a href="{{ route('permissions.edit', $permission->id) }}"
-                                        class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
-                                    <button class="btn btn-danger btn-sm" type="submit"><i
-                                            class="fas fa-trash"></i></button>
-                                </form>
+                            <td colspan='3' class="text-right">
+                                <button class="btn btn-success btn-sm" type="submit">Vincular</button>
                             </td>
                         </tr>
-                    @endforeach
+                    </form>
                 </tbody>
             </table>
         </div>

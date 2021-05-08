@@ -40,6 +40,16 @@ Route::prefix('admin')
         //routes permission
         Route::any('permissions/search', 'ACL\PermissionController@search')->name('permissions.search');
         Route::resource('permissions', 'ACL\PermissionController');
+
+        //routes permission.profile
+        Route::get('profiles/{id}/permissions/{idPermission}/detach', 'ACL\PermissionProfileController@detachPermissionsProfile')->name('profiles.permissions.detach');
+        Route::get('profiles/{id}/permissions', 'ACL\PermissionProfileController@permissions')->name('profiles.permissions');
+        Route::get('profiles/{id}/permissions/create', 'ACL\PermissionProfileController@permissionsAvailable')->name('profiles.permissions.available');
+        Route::post('profiles/{id}/permissions/store', 'ACL\PermissionProfileController@attachPermissionsProfile')->name('profiles.permissions.attach');
+        Route::any('profiles/{id}/permissions/search', 'ACL\PermissionProfileController@filterPermissionsAvailable')->name('profiles.permissions.available.search');
+
+        //routes profiles.permissions
+        Route::get('permissions/{id}/profiles', 'ACL\PermissionProfileController@profiles')->name('permissions.profiles');
     });
 
 //routes details plans
