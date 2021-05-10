@@ -72,7 +72,7 @@ class PermissionProfileController extends Controller
 
         $permissions = $profile->permissionsAvailableSearch($request->filter);
 
-        return view('admin.pages.profiles.permissions.available', [
+        return view('admin.pages.profiles.permissions.permissions', [
             'profile' => $profile,
             'permissions' => $permissions,
             'filters' => $filters

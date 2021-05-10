@@ -50,6 +50,13 @@ Route::prefix('admin')
 
         //routes profiles.permissions
         Route::get('permissions/{id}/profiles', 'ACL\PermissionProfileController@profiles')->name('permissions.profiles');
+
+        //routes plans.profile
+        Route::get('plans/{id}/profiles/{idProfile}/detach', 'ACL\PlanProfileController@detachPlanProfile')->name('plans.profiles.detach');
+        Route::get('plans/{id}/plans', 'ACL\PlanProfileController@plans')->name('plans.profiles');
+        Route::post('plans/{id}/profiles/store', 'ACL\PlanProfileController@attachProfilesProfile')->name('plans.profiles.attach');
+        Route::get('plans/{id}/profiles/create', 'ACL\PlanProfileController@profilesAvailable')->name('plans.profiles.available');
+        Route::any('plans/{id}/profiles/search', 'ACL\PlanProfileController@filterProfilesAvailable')->name('profiles.available.search');
     });
 
 //routes details plans

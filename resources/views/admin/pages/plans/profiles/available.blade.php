@@ -1,20 +1,15 @@
 @extends('adminlte::page')
 
-@section('title', 'Permissões')
+@section('title', 'Perfis')
 
 @section('content_header')
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Permissões</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('plans.index') }}">Planos</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('plans.profiles', $plan->id) }}">Perfis</a></li>
+        <li class="breadcrumb-item active"><a href="{{ route('plans.profiles.available', $plan->id) }}">Disponíveis</a>
+        </li>
     </ol>
-    <div class="row">
-        <div class="col-md-6">
-            <h1>
-                Cadastrar permissões do perfil {{ $profile->name }}
-            </h1>
-        </div>
-    </div>
-
 @stop
 
 @section('content')
@@ -26,24 +21,26 @@
                     <tr>
                         <th width="50px">#</th>
                         <th>Nome</th>
-                        <th>Descrição</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <form action="{{ route('profiles.permissions.attach', $profile->id) }}" method="post">
+                    <form action="{{ route('plans.profiles.attach', $plan->id) }}" method="POST">
                         @csrf
-                        @foreach ($permissions as $permission)
+
+                        @foreach ($profiles as $profile)
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}">
+                                    <input type="checkbox" name="profiles[]" value="{{ $profile->id }}">
                                 </td>
-                                <td>{{ $permission->name }}</td>
-                                <td>{{ $permission->description }}</td>
+                                <td>
+                                    {{ $profile->name }}
+                                </td>
                             </tr>
                         @endforeach
+
                         <tr>
                             <td colspan='3'>
-                                <button class="btn btn-success btn-sm" type="submit">Vincular</button>
+                                <button type="submit" class="btn btn-success btn-sm">Vincular</button>
                             </td>
                         </tr>
                     </form>
@@ -52,9 +49,9 @@
         </div>
         <div class="card-footer">
             @if (isset($filters))
-                {!! $permissions->appends($filters)->links() !!}
+                {!! $profiles->appends($filters)->links() !!}
             @else
-                {!! $permissions->links() !!}
+                {!! $profiles->links() !!}
             @endif
         </div>
     </div>

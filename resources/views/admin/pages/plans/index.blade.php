@@ -52,6 +52,8 @@
                                 <form action="{{ route('plans.destroy', $plan->url) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
+                                    <a href="{{ route('plans.profiles', $plan->id) }}" class="btn btn-info btn-sm"><i
+                                            class="fas fa-lock"></i></a>
                                     <a href="{{ route('details.plan.index', $plan->url) }}" class="btn btn-info btn-sm"><i
                                             class="fas fa-info"></i></a>
                                     <a href="{{ route('plans.show', $plan->url) }}" class="btn btn-warning btn-sm"><i
