@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,13 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'Site\SiteController@index')->name('site.home');
 
 //routes plans
 Route::prefix('admin')
     ->namespace('Admin')
+    ->middleware('auth')
     ->group(function () {
         Route::get('plans', 'PlanController@index')->name('plans.index');
         Route::get('plans/create', 'PlanController@create')->name('plans.create');
@@ -57,17 +57,17 @@ Route::prefix('admin')
         Route::post('plans/{id}/profiles/store', 'ACL\PlanProfileController@attachProfilesProfile')->name('plans.profiles.attach');
         Route::get('plans/{id}/profiles/create', 'ACL\PlanProfileController@profilesAvailable')->name('plans.profiles.available');
         Route::any('plans/{id}/profiles/search', 'ACL\PlanProfileController@filterProfilesAvailable')->name('profiles.available.search');
+
+        //routes details plans
+        Route::get('plans/{url}/details', 'DetailPlanController@index')->name('details.plan.index');
+        Route::get('plans/{url}/details/create', 'DetailPlanController@create')->name('details.plan.create');
+        Route::post('plans/{url}/details', 'DetailPlanController@store')->name('details.plan.store');
+        Route::get('plans/{url}/details/{idDetail}', 'DetailPlanController@show')->name('details.plan.show');
+        Route::delete('plans/{url}/details/delete/{idDetail}', 'DetailPlanController@destroy')->name('details.plan.destroy');
+        Route::get('plans/{url}/details/{idDetail}/edit', 'DetailPlanController@edit')->name('details.plan.edit');
+        Route::put('plans/{url}/details/{idDetail}', 'DetailPlanController@update')->name('details.plan.update');
     });
 
-//routes details plans
-Route::prefix('plans')
-    ->namespace('Admin')
-    ->group(function () {
-        Route::get('{url}/details', 'DetailPlanController@index')->name('details.plan.index');
-        Route::get('{url}/details/create', 'DetailPlanController@create')->name('details.plan.create');
-        Route::post('{url}/details', 'DetailPlanController@store')->name('details.plan.store');
-        Route::get('{url}/details/{idDetail}', 'DetailPlanController@show')->name('details.plan.show');
-        Route::delete('{url}/details/delete/{idDetail}', 'DetailPlanController@destroy')->name('details.plan.destroy');
-        Route::get('{url}/details/{idDetail}/edit', 'DetailPlanController@edit')->name('details.plan.edit');
-        Route::put('{url}/details/{idDetail}', 'DetailPlanController@update')->name('details.plan.update');
-    });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
