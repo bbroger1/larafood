@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//routes site
+Route::get('/plan/{url}', 'Site\SiteController@plan')->name('site.plan.subscription');
 Route::get('/', 'Site\SiteController@index')->name('site.home');
 
 //routes plans
